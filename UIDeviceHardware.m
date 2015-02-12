@@ -78,4 +78,41 @@
     return platform;
 }
 
++ (BOOL)isDevice:(IOSDeviceFamilyType)deviceType {
+    
+    NSString *platformString = [self platformString];
+    NSLog(@"Platform: %@", platformString);
+    
+    NSRange searchResult = {NSNotFound, 0};
+    
+    switch (deviceType) {
+        case ThreeFiveInchDevice:
+            searchResult = [platformString rangeOfString: @"iPhone 3"];
+            
+            if (searchResult.location != NSNotFound) {
+                break;
+            }
+            
+            searchResult = [platformString rangeOfString:@"iPhone 4"];
+            break;
+        case FourInchDevice:
+            searchResult = [platformString rangeOfString:@"iPhone 5"];
+            break;
+        case FiveFiveInchDevice:
+            searchResult = [platformString rangeOfString:@"iPhone 6 Plus"];
+            break;
+        case FourSevenInchDevice:
+            searchResult = [platformString rangeOfString:@"iPhone 6 Plus"];
+            if (searchResult.location == NSNotFound) {
+                searchResult = [platformString rangeOfString:@"iPhone 6"];
+            } else {
+                searchResult.location = NSNotFound;
+            }
+            break;
+        default:
+            break;
+    }
+    
+    return (searchResult.location != NSNotFound);
+}
 @end
